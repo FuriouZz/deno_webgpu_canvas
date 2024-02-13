@@ -1,0 +1,5 @@
+{
+  "tasks": {
+    "dev": "deno run --unstable-ffi --unstable-webgpu --env --node-modules-dir -A mod.ts"
+  }
+}

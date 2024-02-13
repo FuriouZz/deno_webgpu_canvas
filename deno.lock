@@ -1,0 +1,18 @@
+{
+  "version": "3",
+  "packages": {
+    "specifiers": {
+      "npm:three@0.161.0": "npm:three@0.161.0"
+    },
+    "npm": {
+      "three@0.161.0": {
+        "integrity": "sha512-LC28VFtjbOyEu5b93K0bNRLw1rQlMJ85lilKsYj6dgTu+7i17W+JCCEbvrpmNHF1F3NAUqDSWq50UD7w9H2xQw==",
+        "dependencies": {}
+      }
+    }
+  },
+  "remote": {
+    "https://deno.land/x/byte_type@0.1.7/ffi.ts": "5bc603fd9d0b695bcd1bdaeb45e6e34b0925d5cd8da41ceaec290570a55287e0",
+    "https://deno.land/x/sdl2@0.9.0/mod.ts": "207c427173431a3a7d6b4f1a47e76441e23a98cab732ed1fe6fd1bcc5d21794a"
+  }
+}
