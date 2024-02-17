@@ -1,6 +1,6 @@
 import type WebGPUCanvas from "./WebGPUCanvas.ts";
 
-export default class WebGPUContext {
+export default class WebGPUCanvasContext {
   #context: GPUCanvasContext;
   #canvas: WebGPUCanvas;
 

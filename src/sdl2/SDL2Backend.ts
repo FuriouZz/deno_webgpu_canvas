@@ -1,5 +1,4 @@
 import { EventType, Window, WindowBuilder } from "../../deps/sdl2.ts";
-import DOMRect from "../dom/DOMRect.ts";
 import KeyboardEvent from "../dom/events/KeyboardEvent.ts";
 import PointerEvent from "../dom/events/PointerEvent.ts";
 import WheelEvent from "../dom/events/WheelEvent.ts";
@@ -7,13 +6,12 @@ import { SDL2Keyboard } from "./SDL2Keyboard.ts";
 import { Code } from "./keymap.ts";
 import { KeyMap } from "./keymap.ts";
 
-export default class SDL2Canvas extends EventTarget {
+export default class SDL2Backend {
   #window: Window;
   #size: { width: number; height: number };
-  style = {};
+  #surface?: Deno.UnsafeWindowSurface;
 
   constructor(title: string, width: number, height: number) {
-    super();
     const window = new WindowBuilder(title, width, height).build();
     this.#size = { width, height };
     this.#window = window;
@@ -39,35 +37,14 @@ export default class SDL2Canvas extends EventTarget {
     this.#size.height = v;
   }
 
-  get clientWidth() {
-    return this.width;
+  getSurface() {
+    if (!this.#surface) {
+      this.#surface = this.#window.windowSurface()
+    }
+    return this.#surface
   }
 
-  get clientHeight() {
-    return this.height;
-  }
-
-  setPointerCapture() {}
-  releasePointerCapture() {}
-
-  getRootNode() {
-    return this;
-  }
-
-  getBoundingClientRect() {
-    return DOMRect.fromRect({
-      x: 0,
-      y: 0,
-      width: this.width,
-      height: this.height,
-      top: 0,
-      left: 0,
-      right: this.width,
-      bottom: this.height,
-    });
-  }
-
-  async pollEvents(surface: Deno.UnsafeWindowSurface) {
+  async pollEvents(eventTarget: EventTarget) {
     const kb = new SDL2Keyboard();
 
     for await (const event of this.#window.events()) {
@@ -77,8 +54,8 @@ export default class SDL2Canvas extends EventTarget {
 
       switch (event.type) {
         case EventType.Draw: {
-          this.dispatchEvent(new CustomEvent("draw"));
-          surface?.present();
+          eventTarget.dispatchEvent(new CustomEvent("draw"));
+          this.#surface?.present();
           break;
         }
 
@@ -98,7 +75,7 @@ export default class SDL2Canvas extends EventTarget {
           e.deltaX = event.x;
           e.deltaY = event.y;
 
-          this.dispatchEvent(e);
+          eventTarget.dispatchEvent(e);
 
           break;
         }
@@ -140,7 +117,7 @@ export default class SDL2Canvas extends EventTarget {
           e.x = x;
           e.y = y;
 
-          this.dispatchEvent(e);
+          eventTarget.dispatchEvent(e);
 
           break;
         }
@@ -160,7 +137,7 @@ export default class SDL2Canvas extends EventTarget {
           e.which = e.keyCode;
           e.code = Code[e.keyCode];
 
-          this.dispatchEvent(e);
+          eventTarget.dispatchEvent(e);
 
           break;
         }
