@@ -19,7 +19,6 @@ export default class WebGPUCanvasContext {
       width: this.#canvas.width,
       height: this.#canvas.height,
       usage: undefined,
-      alphaMode: "opaque",
     });
   }
 

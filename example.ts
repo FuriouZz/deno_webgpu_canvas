@@ -15,7 +15,7 @@ const height = 600;
 
 const canvas = new WebGPUCanvas({ title, width, height });
 
-const renderer = new WebGPURenderer({ canvas });
+const renderer = new WebGPURenderer({ canvas, alpha: false });
 await renderer.init();
 renderer.setSize(width, height, false);
 
